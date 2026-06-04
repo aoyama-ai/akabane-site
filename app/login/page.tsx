@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const router = useRouter();
@@ -25,6 +25,48 @@ export default function LoginPage() {
   };
 
   return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <input
+        type="password"
+        placeholder="パスワードを入力"
+        value={password}
+        onChange={(e) => { setPassword(e.target.value); setError(false); }}
+        style={{
+          backgroundColor: "var(--bg-secondary)",
+          border: `1px solid ${error ? "#e05555" : "var(--border)"}`,
+          borderRadius: "8px",
+          padding: "12px 16px",
+          color: "var(--text-primary)",
+          fontSize: "15px",
+          outline: "none",
+          width: "100%",
+        }}
+      />
+      {error && (
+        <p style={{ fontSize: "13px", color: "#e05555", margin: 0 }}>パスワードが違います</p>
+      )}
+      <button
+        type="submit"
+        style={{
+          backgroundColor: "var(--accent-gold)",
+          color: "#1a1a1a",
+          border: "none",
+          borderRadius: "8px",
+          padding: "12px",
+          fontSize: "15px",
+          fontWeight: "700",
+          cursor: "pointer",
+          width: "100%",
+        }}
+      >
+        入る
+      </button>
+    </form>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div style={{
       minHeight: "100vh",
       backgroundColor: "var(--bg-primary)",
@@ -45,44 +87,9 @@ export default function LoginPage() {
             赤羽さん勉強会資料
           </h1>
         </div>
-
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <input
-            type="password"
-            placeholder="パスワードを入力"
-            value={password}
-            onChange={(e) => { setPassword(e.target.value); setError(false); }}
-            style={{
-              backgroundColor: "var(--bg-secondary)",
-              border: `1px solid ${error ? "#e05555" : "var(--border)"}`,
-              borderRadius: "8px",
-              padding: "12px 16px",
-              color: "var(--text-primary)",
-              fontSize: "15px",
-              outline: "none",
-              width: "100%",
-            }}
-          />
-          {error && (
-            <p style={{ fontSize: "13px", color: "#e05555", margin: 0 }}>パスワードが違います</p>
-          )}
-          <button
-            type="submit"
-            style={{
-              backgroundColor: "var(--accent-gold)",
-              color: "#1a1a1a",
-              border: "none",
-              borderRadius: "8px",
-              padding: "12px",
-              fontSize: "15px",
-              fontWeight: "700",
-              cursor: "pointer",
-              width: "100%",
-            }}
-          >
-            入る
-          </button>
-        </form>
+        <Suspense>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );
