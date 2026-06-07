@@ -6,7 +6,7 @@ const COOKIE_NAME = "auth_token";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith("/login")) return NextResponse.next();
+  if (pathname.startsWith("/login") || pathname.startsWith("/api/login")) return NextResponse.next();
 
   const cookie = request.cookies.get(COOKIE_NAME);
   if (cookie?.value === PASSWORD) return NextResponse.next();

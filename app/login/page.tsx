@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 function LoginForm() {
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,22 +27,42 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      <input
-        type="password"
-        placeholder="パスワードを入力"
-        value={password}
-        onChange={(e) => { setPassword(e.target.value); setError(false); }}
-        style={{
-          backgroundColor: "var(--bg-secondary)",
-          border: `1px solid ${error ? "#e05555" : "var(--border)"}`,
-          borderRadius: "8px",
-          padding: "12px 16px",
-          color: "var(--text-primary)",
-          fontSize: "15px",
-          outline: "none",
-          width: "100%",
-        }}
-      />
+      <div style={{ position: "relative" }}>
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="パスワードを入力"
+          value={password}
+          onChange={(e) => { setPassword(e.target.value); setError(false); }}
+          style={{
+            backgroundColor: "var(--bg-secondary)",
+            border: `1px solid ${error ? "#e05555" : "var(--border)"}`,
+            borderRadius: "8px",
+            padding: "12px 48px 12px 16px",
+            color: "var(--text-primary)",
+            fontSize: "15px",
+            outline: "none",
+            width: "100%",
+          }}
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          style={{
+            position: "absolute",
+            right: "12px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "var(--text-secondary)",
+            fontSize: "13px",
+            padding: "2px 4px",
+          }}
+        >
+          {showPassword ? "隠す" : "表示"}
+        </button>
+      </div>
       {error && (
         <p style={{ fontSize: "13px", color: "#e05555", margin: 0 }}>パスワードが違います</p>
       )}
